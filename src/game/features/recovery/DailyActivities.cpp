@@ -798,6 +798,7 @@ namespace YimMenu::Features
 				{
 					int combination = *ScriptLocal(thread, 153).At(22).At(i, 2).At(1).As<int*>();
 					*ScriptLocal(thread, 153).At(22).At(i, 2).As<float*>() = combination;
+					PAD::SET_CONTROL_VALUE_NEXT_FRAME(0, 237, 1.0f);
 				}
 			}
 		}
