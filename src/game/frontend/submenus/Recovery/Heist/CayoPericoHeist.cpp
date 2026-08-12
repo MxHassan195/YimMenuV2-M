@@ -21,7 +21,10 @@ namespace YimMenu::Submenus
 		setups->AddItem(std::make_shared<ListCommandItem>("cayopericoheistdifficulty"_J));
 		setups->AddItem(std::make_shared<ListCommandItem>("cayopericoheistprimarytarget"_J));
 		setups->AddItem(std::make_shared<ListCommandItem>("cayopericoheistweapon"_J));
-		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup"_J));
+		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup1player"_J));
+		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup2players"_J));
+		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup3players"_J));
+		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup4players"_J));
 
 		loots->AddItem(std::make_shared<IntCommandItem>("cayopericoheistprimarytargetvalue"_J));
 		loots->AddItem(std::make_shared<IntCommandItem>("cayopericoheistsecondarytakevalue"_J));

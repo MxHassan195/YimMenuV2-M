@@ -74,7 +74,7 @@ namespace YimMenu::Features
 		};
 		static ListCommand _CayoPericoHeistWeapon{"cayopericoheistweapon", "Weapon", "Weapon category", cayoPericoHeistWeapon, 1};
 
-		class Setup : public Command
+		class Setup1Player : public Command
 		{
 			using Command::Command;
 
@@ -99,11 +99,170 @@ namespace YimMenu::Features
 				Stats::SetInt("MPX_H4LOOT_WEED_C_SCOPED", 0);
 				Stats::SetInt("MPX_H4LOOT_PAINT", 127);
 				Stats::SetInt("MPX_H4LOOT_PAINT_SCOPED", 127);
-				Stats::SetInt("MPX_H4LOOT_CASH_V", 83250);
-				Stats::SetInt("MPX_H4LOOT_COKE_V", 202500);
-				Stats::SetInt("MPX_H4LOOT_GOLD_V", 333333);
-				Stats::SetInt("MPX_H4LOOT_WEED_V", 135000);
-				Stats::SetInt("MPX_H4LOOT_PAINT_V", 180000);
+				Stats::SetInt("MPX_H4LOOT_CASH_V", 171931);
+				Stats::SetInt("MPX_H4LOOT_COKE_V", 343863);
+				Stats::SetInt("MPX_H4LOOT_GOLD_V", 458484);
+				Stats::SetInt("MPX_H4LOOT_WEED_V", 229242);
+				Stats::SetInt("MPX_H4LOOT_PAINT_V", 343863);
+				Stats::SetInt("MPX_H4_PROGRESS", _CayoPericoHeistDifficulty.GetState()); // Difficulty
+				Stats::SetInt("MPX_H4CNF_BS_GEN", 262143);
+				Stats::SetInt("MPX_H4CNF_BS_ENTR", 63);
+				Stats::SetInt("MPX_H4CNF_BS_ABIL", 63);
+				Stats::SetInt("MPX_H4CNF_WEP_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_ARM_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_HEL_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_APPROACH", -1);
+				Stats::SetInt("MPX_H4CNF_BOLTCUT", 4424);
+				Stats::SetInt("MPX_H4CNF_UNIFORM", 5256);
+				Stats::SetInt("MPX_H4CNF_GRAPPEL", 5156);
+				Stats::SetInt("MPX_H4_MISSIONS", -1);
+				Stats::SetInt("MPX_H4CNF_WEAPONS", _CayoPericoHeistWeapon.GetState()); // Weapon
+				Stats::SetInt("MPX_H4CNF_TROJAN", 5);
+				Stats::SetInt("MPX_H4_PLAYTHROUGH_STATUS", 100);
+
+				ScriptMgr::Yield(500ms);
+
+				if (auto thread = Scripts::FindScriptThread("heist_island_planning"_J))
+					*ScriptLocal(thread, 1580).As<int*>() = 2;
+			}
+		};
+
+		class Setup2Players : public Command
+		{
+			using Command::Command;
+
+			virtual void OnCall() override
+			{
+				Stats::SetInt("MPX_H4CNF_TARGET", _CayoPericoHeistPrimaryTarget.GetState()); // Primary target
+				Stats::SetInt("MPX_H4LOOT_CASH_I", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_I_SCOPED", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_C", 0);
+				Stats::SetInt("MPX_H4LOOT_CASH_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_COKE_I", 255);
+				Stats::SetInt("MPX_H4LOOT_COKE_I_SCOPED", 255);
+				Stats::SetInt("MPX_H4LOOT_COKE_C", 0);
+				Stats::SetInt("MPX_H4LOOT_COKE_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_I", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_I_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_C", 255);
+				Stats::SetInt("MPX_H4LOOT_GOLD_C_SCOPED", 255);
+				Stats::SetInt("MPX_H4LOOT_WEED_I", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_I_SCOPED", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_C", 0);
+				Stats::SetInt("MPX_H4LOOT_WEED_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_PAINT", 127);
+				Stats::SetInt("MPX_H4LOOT_PAINT_SCOPED", 127);
+				Stats::SetInt("MPX_H4LOOT_CASH_V", 448181);
+				Stats::SetInt("MPX_H4LOOT_COKE_V", 896363);
+				Stats::SetInt("MPX_H4LOOT_GOLD_V", 1195151);
+				Stats::SetInt("MPX_H4LOOT_WEED_V", 597575);
+				Stats::SetInt("MPX_H4LOOT_PAINT_V", 896363);
+				Stats::SetInt("MPX_H4_PROGRESS", _CayoPericoHeistDifficulty.GetState()); // Difficulty
+				Stats::SetInt("MPX_H4CNF_BS_GEN", 262143);
+				Stats::SetInt("MPX_H4CNF_BS_ENTR", 63);
+				Stats::SetInt("MPX_H4CNF_BS_ABIL", 63);
+				Stats::SetInt("MPX_H4CNF_WEP_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_ARM_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_HEL_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_APPROACH", -1);
+				Stats::SetInt("MPX_H4CNF_BOLTCUT", 4424);
+				Stats::SetInt("MPX_H4CNF_UNIFORM", 5256);
+				Stats::SetInt("MPX_H4CNF_GRAPPEL", 5156);
+				Stats::SetInt("MPX_H4_MISSIONS", -1);
+				Stats::SetInt("MPX_H4CNF_WEAPONS", _CayoPericoHeistWeapon.GetState()); // Weapon
+				Stats::SetInt("MPX_H4CNF_TROJAN", 5);
+				Stats::SetInt("MPX_H4_PLAYTHROUGH_STATUS", 100);
+
+				ScriptMgr::Yield(500ms);
+
+				if (auto thread = Scripts::FindScriptThread("heist_island_planning"_J))
+					*ScriptLocal(thread, 1580).As<int*>() = 2;
+			}
+		};
+
+		class Setup3Players : public Command
+		{
+			using Command::Command;
+
+			virtual void OnCall() override
+			{
+				Stats::SetInt("MPX_H4CNF_TARGET", _CayoPericoHeistPrimaryTarget.GetState()); // Primary target
+				Stats::SetInt("MPX_H4LOOT_CASH_I", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_I_SCOPED", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_C", 0);
+				Stats::SetInt("MPX_H4LOOT_CASH_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_COKE_I", 255);
+				Stats::SetInt("MPX_H4LOOT_COKE_I_SCOPED", 255);
+				Stats::SetInt("MPX_H4LOOT_COKE_C", 0);
+				Stats::SetInt("MPX_H4LOOT_COKE_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_I", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_I_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_C", 255);
+				Stats::SetInt("MPX_H4LOOT_GOLD_C_SCOPED", 255);
+				Stats::SetInt("MPX_H4LOOT_WEED_I", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_I_SCOPED", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_C", 0);
+				Stats::SetInt("MPX_H4LOOT_WEED_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_PAINT", 127);
+				Stats::SetInt("MPX_H4LOOT_PAINT_SCOPED", 127);
+				Stats::SetInt("MPX_H4LOOT_CASH_V", 505768);
+				Stats::SetInt("MPX_H4LOOT_COKE_V", 1011536);
+				Stats::SetInt("MPX_H4LOOT_GOLD_V", 1348715);
+				Stats::SetInt("MPX_H4LOOT_WEED_V", 674357);
+				Stats::SetInt("MPX_H4LOOT_PAINT_V", 1011536);
+				Stats::SetInt("MPX_H4_PROGRESS", _CayoPericoHeistDifficulty.GetState()); // Difficulty
+				Stats::SetInt("MPX_H4CNF_BS_GEN", 262143);
+				Stats::SetInt("MPX_H4CNF_BS_ENTR", 63);
+				Stats::SetInt("MPX_H4CNF_BS_ABIL", 63);
+				Stats::SetInt("MPX_H4CNF_WEP_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_ARM_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_HEL_DISRP", 3);
+				Stats::SetInt("MPX_H4CNF_APPROACH", -1);
+				Stats::SetInt("MPX_H4CNF_BOLTCUT", 4424);
+				Stats::SetInt("MPX_H4CNF_UNIFORM", 5256);
+				Stats::SetInt("MPX_H4CNF_GRAPPEL", 5156);
+				Stats::SetInt("MPX_H4_MISSIONS", -1);
+				Stats::SetInt("MPX_H4CNF_WEAPONS", _CayoPericoHeistWeapon.GetState()); // Weapon
+				Stats::SetInt("MPX_H4CNF_TROJAN", 5);
+				Stats::SetInt("MPX_H4_PLAYTHROUGH_STATUS", 100);
+
+				ScriptMgr::Yield(500ms);
+
+				if (auto thread = Scripts::FindScriptThread("heist_island_planning"_J))
+					*ScriptLocal(thread, 1580).As<int*>() = 2;
+			}
+		};
+
+		class Setup4Players : public Command
+		{
+			using Command::Command;
+
+			virtual void OnCall() override
+			{
+				Stats::SetInt("MPX_H4CNF_TARGET", _CayoPericoHeistPrimaryTarget.GetState()); // Primary target
+				Stats::SetInt("MPX_H4LOOT_CASH_I", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_I_SCOPED", 16711680);
+				Stats::SetInt("MPX_H4LOOT_CASH_C", 0);
+				Stats::SetInt("MPX_H4LOOT_CASH_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_COKE_I", 255);
+				Stats::SetInt("MPX_H4LOOT_COKE_I_SCOPED", 255);
+				Stats::SetInt("MPX_H4LOOT_COKE_C", 0);
+				Stats::SetInt("MPX_H4LOOT_COKE_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_I", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_I_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_GOLD_C", 255);
+				Stats::SetInt("MPX_H4LOOT_GOLD_C_SCOPED", 255);
+				Stats::SetInt("MPX_H4LOOT_WEED_I", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_I_SCOPED", 65280);
+				Stats::SetInt("MPX_H4LOOT_WEED_C", 0);
+				Stats::SetInt("MPX_H4LOOT_WEED_C_SCOPED", 0);
+				Stats::SetInt("MPX_H4LOOT_PAINT", 127);
+				Stats::SetInt("MPX_H4LOOT_PAINT_SCOPED", 127);
+				Stats::SetInt("MPX_H4LOOT_CASH_V", 586306);
+				Stats::SetInt("MPX_H4LOOT_COKE_V", 1172613);
+				Stats::SetInt("MPX_H4LOOT_GOLD_V", 1563484);
+				Stats::SetInt("MPX_H4LOOT_WEED_V", 781742);
+				Stats::SetInt("MPX_H4LOOT_PAINT_V", 1172613);
 				Stats::SetInt("MPX_H4_PROGRESS", _CayoPericoHeistDifficulty.GetState()); // Difficulty
 				Stats::SetInt("MPX_H4CNF_BS_GEN", 262143);
 				Stats::SetInt("MPX_H4CNF_BS_ENTR", 63);
@@ -295,7 +454,10 @@ namespace YimMenu::Features
 
 		static SetCuts _CayoPericoHeistSetCuts{"cayopericoheistsetcuts", "Set Cuts", "Sets heist cut"};
 		static ForceReady _CayoPericoHeistForceReady{"cayopericoheistforceready", "Force Ready", "Forces all players to be ready"};
-		static Setup _CayoPericoHeistSetup{"cayopericoheistsetup", "Setup", "Sets up cayo perico heist"};
+		static Setup1Player _CayoPericoHeistSetup{"cayopericoheistsetup1player", "Setup", "Sets up cayo perico heist"};
+		static Setup2Players _CayoPericoHeistSetup{"cayopericoheistsetup2players", "Setup", "Sets up cayo perico heist"};
+		static Setup3Players _CayoPericoHeistSetup{"cayopericoheistsetup3players", "Setup", "Sets up cayo perico heist"};
+		static Setup4Players _CayoPericoHeistSetup{"cayopericoheistsetup4players", "Setup", "Sets up cayo perico heist"};
 		static SetPrimaryTargetValue _CayoPericoHeistSetPrimaryTargetValue{"cayopericoheistsetprimarytargetvalue", "Set Primary Target Value", "Updates primary target value"};
 		static SetSecondaryTakeValue _CayoPericoHeistSetSecondaryTakeValue{"cayopericoheistsetsecondarytakevalue", "Set Secondary Take Value", "Updates secondary take value"};
 		static SkipHacking _CayoPericoHeistSkipHacking{"cayopericoheistskiphacking", "Skip Hacking", "Skips hacking process"};
