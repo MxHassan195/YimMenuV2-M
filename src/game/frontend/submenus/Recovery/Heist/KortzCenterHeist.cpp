@@ -9,11 +9,14 @@ namespace YimMenu::Submenus
 		auto target    = std::make_shared<Group>("Primary Target", 1);
 		auto intel  = std::make_shared<CollapsingHeaderItem>("Intel");
 		auto intelGroup   = std::make_shared<Group>("", 2);
-
-
+		
+		
 		auto vehicles  = std::make_shared<CollapsingHeaderItem>("Vehicles");
+		auto vehiclesGroup   = std::make_shared<Group>("", 2);
 		auto equipment = std::make_shared<CollapsingHeaderItem>("Equipment");
+		auto equipmentGroup   = std::make_shared<Group>("", 3);
 		auto optinalPrep     = std::make_shared<CollapsingHeaderItem>("Optinal Prep Work");
+		auto optinalPrepGroup   = std::make_shared<Group>("", 4);
 
 		auto action    = std::make_shared<Group>("", 1);
 
@@ -21,7 +24,6 @@ namespace YimMenu::Submenus
 
 		target->AddItem(std::make_shared<ListCommandItem>("kortzcenterheistprimarytarget"_J));
 
-		// intel->setLayout(LayoutType::Grid, 2);
 		intelGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistscopeout"_J));
 		intelGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistscopesecondary"_J));
 		intelGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistscopepoi"_J));
@@ -30,36 +32,40 @@ namespace YimMenu::Submenus
 		intel->AddItem(intelGroup);
 
 		
-		vehicles->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistcaracara"_J));
-		vehicles->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistannihilator"_J));
-		vehicles->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistmanchez"_J));
-		vehicles->AddItem(std::make_shared<ListCommandItem>("kortzcenterheistmanchezcolor"_J));
+		vehiclesGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistcaracara"_J));
+		vehiclesGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistannihilator"_J));
+		vehiclesGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistmanchez"_J));
+		vehiclesGroup->AddItem(std::make_shared<ListCommandItem>("kortzcenterheistmanchezcolor"_J));
+		vehicles->AddItem(vehiclesGroup);
 		
-		
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheisthazmat"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistmanholekey"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistalphamail"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheiststaffkeycard"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheisttacticalequip"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistunmarkedweapons"_J));
-		equipment->AddItem(std::make_shared<ListCommandItem>("kortzcenterheistloadouttype"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistaccesscode"_J));
-		equipment->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheisthackingdevice"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheisthazmat"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistalphamail"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheiststaffkeycard"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheisttacticalequip"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistunmarkedweapons"_J));
+		equipmentGroup->AddItem(std::make_shared<ListCommandItem>("kortzcenterheistloadouttype"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistaccesscode"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheisthackingdevice"_J));
+		equipmentGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistmanholekey"_J));
 
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistguardshipments"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistguardroutes"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistglasscutter"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistpowerdrills"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistempcharges"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistprepemp"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistguardroutesprep"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistglasscutterprep"_J));
-		optinalPrep->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistpowerdrillsprep"_J));
+		equipment->AddItem(equipmentGroup);
+		
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistguardroutes"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistglasscutter"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistpowerdrills"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistempcharges"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistprepemp"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistguardroutesprep"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistglasscutterprep"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistpowerdrillsprep"_J));
+		optinalPrepGroup->AddItem(std::make_shared<BoolCommandItem>("kortzcenterheistguardshipments"_J));
+
+		optinalPrep->AddItem(optinalPrepGroup);
 
 		action->AddItem(std::make_shared<CommandItem>("kortzcenterheistsetup"_J));
 
 
-		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipfingerprint"_J));
+		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipfingerprint"_J), 2.0f);
 		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipsignalnodes"_J));
 		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipdatacrack"_J));
 		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistenteraccesscode"_J));
