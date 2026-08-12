@@ -40,6 +40,7 @@ namespace YimMenu::Submenus
 
 		tab->AddItem(cuts);
 		tab->AddItem(setups);
+		tab->AddItem(playersetups);
 		tab->AddItem(loots);
 		tab->AddItem(misc);
 
