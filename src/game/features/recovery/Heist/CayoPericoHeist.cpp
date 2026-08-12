@@ -454,10 +454,10 @@ namespace YimMenu::Features
 
 		static SetCuts _CayoPericoHeistSetCuts{"cayopericoheistsetcuts", "Set Cuts", "Sets heist cut"};
 		static ForceReady _CayoPericoHeistForceReady{"cayopericoheistforceready", "Force Ready", "Forces all players to be ready"};
-		static Setup1Player _CayoPericoHeistSetup{"cayopericoheistsetup1player", "Setup", "Sets up cayo perico heist"};
-		static Setup2Players _CayoPericoHeistSetup{"cayopericoheistsetup2players", "Setup", "Sets up cayo perico heist"};
-		static Setup3Players _CayoPericoHeistSetup{"cayopericoheistsetup3players", "Setup", "Sets up cayo perico heist"};
-		static Setup4Players _CayoPericoHeistSetup{"cayopericoheistsetup4players", "Setup", "Sets up cayo perico heist"};
+		static Setup1Player _CayoPericoHeistSetup1Player{"cayopericoheistsetup1player", "Setup 1 Player", "Sets up cayo perico heist"};
+		static Setup2Players _CayoPericoHeistSetup2Players{"cayopericoheistsetup2players", "Setup 2 Players", "Sets up cayo perico heist"};
+		static Setup3Players _CayoPericoHeistSetup3Players{"cayopericoheistsetup3players", "Setup 3 Players", "Sets up cayo perico heist"};
+		static Setup4Players _CayoPericoHeistSetup4Players{"cayopericoheistsetup4players", "Setup 4 Players", "Sets up cayo perico heist"};
 		static SetPrimaryTargetValue _CayoPericoHeistSetPrimaryTargetValue{"cayopericoheistsetprimarytargetvalue", "Set Primary Target Value", "Updates primary target value"};
 		static SetSecondaryTakeValue _CayoPericoHeistSetSecondaryTakeValue{"cayopericoheistsetsecondarytakevalue", "Set Secondary Take Value", "Updates secondary take value"};
 		static SkipHacking _CayoPericoHeistSkipHacking{"cayopericoheistskiphacking", "Skip Hacking", "Skips hacking process"};
