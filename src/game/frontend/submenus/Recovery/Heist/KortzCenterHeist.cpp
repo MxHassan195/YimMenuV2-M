@@ -65,7 +65,7 @@ namespace YimMenu::Submenus
 		action->AddItem(std::make_shared<CommandItem>("kortzcenterheistsetup"_J));
 
 
-		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipfingerprint"_J), 2.0f);
+		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipfingerprint"_J));
 		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipsignalnodes"_J));
 		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistskipdatacrack"_J));
 		inHeist->AddItem(std::make_shared<CommandItem>("kortzcenterheistenteraccesscode"_J));
