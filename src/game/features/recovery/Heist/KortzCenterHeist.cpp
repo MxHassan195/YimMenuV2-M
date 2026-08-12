@@ -67,7 +67,7 @@ namespace YimMenu::Features
     static BoolCommand _KortzCenterAnnihilator{"kortzcenterheistannihilator", "Annihilator Stealth", "Annihilator stealth", true};
     static BoolCommand _KortzCenterManchez{"kortzcenterheistmanchez", "Manchez", "Manchez", true};
     
-    -- Individual Manchez Vehicle Selections
+    // Individual Manchez Vehicle Selections
     static BoolCommand _KortzCenterManchezRed{"kortzcenterheistmanchezred", "Manchez (Red)", "Enable Red Manchez", true};
     static BoolCommand _KortzCenterManchezBlue{"kortzcenterheistmanchezblue", "Manchez (Blue)", "Enable Blue Manchez", true};
     static BoolCommand _KortzCenterManchezGreen{"kortzcenterheistmanchezgreen", "Manchez (Green)", "Enable Green Manchez", true};
