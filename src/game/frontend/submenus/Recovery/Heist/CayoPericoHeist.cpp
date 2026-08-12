@@ -8,6 +8,7 @@ namespace YimMenu::Submenus
 
 		auto cuts = std::make_shared<Group>("Heist Cuts", 2);
 		auto setups = std::make_shared<Group>("Heist Setups");
+		auto playersetups = std::make_shared<Group>("", 2);
 		auto loots = std::make_shared<Group>("Loots", 2);
 		auto misc = std::make_shared<Group>("Misc", 1);
 
@@ -21,10 +22,10 @@ namespace YimMenu::Submenus
 		setups->AddItem(std::make_shared<ListCommandItem>("cayopericoheistdifficulty"_J));
 		setups->AddItem(std::make_shared<ListCommandItem>("cayopericoheistprimarytarget"_J));
 		setups->AddItem(std::make_shared<ListCommandItem>("cayopericoheistweapon"_J));
-		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup1player"_J));
-		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup2players"_J));
-		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup3players"_J));
-		setups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup4players"_J));
+		playersetups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup1player"_J));
+		playersetups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup2players"_J));
+		playersetups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup3players"_J));
+		playersetups->AddItem(std::make_shared<CommandItem>("cayopericoheistsetup4players"_J));
 
 		loots->AddItem(std::make_shared<IntCommandItem>("cayopericoheistprimarytargetvalue"_J));
 		loots->AddItem(std::make_shared<IntCommandItem>("cayopericoheistsecondarytakevalue"_J));
