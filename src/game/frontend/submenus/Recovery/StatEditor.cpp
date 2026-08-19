@@ -6,6 +6,7 @@
 #include "game/pointers/Pointers.hpp"
 #include "StatEditor.hpp"
 #include "types/stats/CStatsMgr.hpp"
+#include <charconv>
 
 namespace YimMenu::Submenus
 {
@@ -35,11 +36,12 @@ namespace YimMenu::Submenus
 	};
 
 	union StatValue {
-		float m_AsFloat;
+		float m_AsFloat[3];
 		int m_AsInt;
 		bool m_AsBool;
 		std::uint64_t m_AsU64;
-		char m_AsString[12];
+		char m_AsString[21];
+		Date m_Date;
 	};
 
 	// https://stackoverflow.com/questions/66897068/can-trim-of-a-string-be-done-inplace-with-c20-ranges
@@ -108,7 +110,7 @@ namespace YimMenu::Submenus
 		return name;
 	}
 
-	static void ReadStat(StatValue& value, sStatData* data)
+	static void ReadStat(std::uint32_t hash,StatValue& value, sStatData* data)
 	{
 		memset(&value, 0, sizeof(StatValue));
 
@@ -118,7 +120,7 @@ namespace YimMenu::Submenus
 			value.m_AsBool = data->GetBool();
 			return;
 		case sStatData::Type::FLOAT:
-			value.m_AsFloat = data->GetFloat();
+			value.m_AsFloat[0] = data->GetFloat();
 			return;
 		case sStatData::Type::INT:
 		case sStatData::Type::UINT32:
@@ -136,6 +138,21 @@ namespace YimMenu::Submenus
 		case sStatData::Type::STRING:
 			strncpy(value.m_AsString, data->GetString(), sizeof(value.m_AsString));
 			return;
+		case sStatData::Type::POS:
+			STATS::STAT_GET_POS(hash, &value.m_AsFloat[0], &value.m_AsFloat[1], &value.m_AsFloat[2], true);
+			return;
+		case sStatData::Type::DATE:
+			STATS::STAT_GET_DATE(hash, &value.m_Date, sizeof(Date) / 8, true);
+			return;
+		case sStatData::Type::USERID:
+		{
+			char user_id[21]{};
+			data->GetUserID(user_id, sizeof(user_id));
+			value.m_AsU64 = std::strtoull(user_id, nullptr, 10);
+			return;
+		}
+		case sStatData::Type::PROFILE_SETTING:
+		case sStatData::Type::TEXTLABEL:
 		default:
 			return; // data type not supported
 		}
@@ -149,7 +166,7 @@ namespace YimMenu::Submenus
 			STATS::STAT_SET_BOOL(hash, value.m_AsBool, true);
 			return;
 		case sStatData::Type::FLOAT:
-			STATS::STAT_SET_FLOAT(hash, value.m_AsFloat, true);
+			STATS::STAT_SET_FLOAT(hash, value.m_AsFloat[0], true);
 			return;
 		case sStatData::Type::INT:
 		case sStatData::Type::UINT32:
@@ -172,6 +189,13 @@ namespace YimMenu::Submenus
 		case sStatData::Type::STRING:
 			STATS::STAT_SET_STRING(hash, value.m_AsString, true);
 			return;
+		case sStatData::Type::USERID:
+		{
+			std::string user_id = std::to_string(value.m_AsU64);
+			STATS::STAT_SET_USER_ID(hash, user_id.c_str(), true);
+			//data->SetUserID(value.m_AsString);
+			return;
+		}
 		case sStatData::Type::PACKED:
 			/*data->SetUInt64(value.m_AsU64 - 1);
 			Packed data can't be written using STATS::STAT_INCREMENT
@@ -179,11 +203,30 @@ namespace YimMenu::Submenus
 			Stats::SetMaskedAll(hash, value.m_AsU64);
 			return;
 		case sStatData::Type::POS:
+			STATS::STAT_SET_POS(hash, value.m_AsFloat[0], value.m_AsFloat[1], value.m_AsFloat[2], true);
+			return;
 		case sStatData::Type::DATE:
+			STATS::STAT_SET_DATE(hash, &value.m_Date, sizeof(Date) / 8, true);
+			return;
 		case sStatData::Type::PROFILE_SETTING:
+		case sStatData::Type::TEXTLABEL:
 		default:
 			return; // data type not supported
 		}
+	}
+
+	static bool CheckDate(Date date)
+	{
+		int &year = date.Year, &Month = date.Month, &day = date.Day, &Hour = date.Hour, &Minute = date.Minute, &Second = date.Second, &Mil = date.Millisecond;
+
+		int checkfeb = 30 + ((Month % 2) + (Month >= 8)) % 2;
+		checkfeb = checkfeb - (2 * (Month == 2));
+		checkfeb = checkfeb + ((Month == 2) && ((year % 100) && (year % 4 == 0) || (year % 400 == 0)));
+
+		if (year >= 0 && day >= 0 && day <= checkfeb && Month >= 0 && Month <= 12 && Hour >= 0 && Hour < 24 && Minute >= 0 && Minute < 60 && Second >= 0 && Second < 60 && Mil >= 0 && Mil < 1000)
+			return true;
+
+		return false;
 	}
 
 	// TODO: don't call std::string_view::data()
@@ -199,7 +242,7 @@ namespace YimMenu::Submenus
 				return tolower(c);
 			});
 
-			if (as_string == "true" || as_string == "1")
+			if (as_string != "false" && as_string != "0")
 			{
 				_bool = true;
 			}
@@ -245,6 +288,68 @@ namespace YimMenu::Submenus
 			Stats::SetMaskedAll(hash, uint64_);
 			return;
 		}
+		case sStatData::Type::USERID:
+			if (value.find_first_not_of("0123456789") == std::string::npos && !value.empty())
+				STATS::STAT_SET_USER_ID(hash, value.data(), true);
+			return;
+		case sStatData::Type::DATE:
+		{
+			std::stringstream ss(value.data());
+			std::string token;
+			std::vector<int> date;
+			date.reserve(7);
+
+			while (std::getline(ss, token, ','))
+			{
+				uint32_t date_token = 0;
+				auto [ptr, ec] = std::from_chars(token.c_str(), token.c_str() + token.size(), date_token);
+				if (ec != std::errc())
+					return;
+
+				date.emplace_back(date_token);
+			}
+
+			if (date.size() == 7)
+			{
+				Date temp{
+				    date[0], // Year
+				    date[1], // Month
+				    date[2], // Day
+				    date[3], // Hour
+				    date[4], // Minute
+				    date[5], // Second
+				    date[6]  // Millisecond
+				};
+				if (CheckDate(temp))
+				{
+					STATS::STAT_SET_DATE(hash, &temp, sizeof(Date) / 8, true);
+				}
+			}
+			return;
+		}
+		case sStatData::Type::POS:
+		{
+			std::stringstream ss(value.data());
+			std::string token;
+			std::vector<float> pos;
+			pos.reserve(3);
+
+			while (std::getline(ss, token, ','))
+			{
+				float pos_token = 0.0f;
+				auto [ptr, ec] = std::from_chars(token.c_str(), token.c_str() + token.size(), pos_token);
+				if (ec != std::errc())
+					return;
+
+				pos.emplace_back(pos_token);
+			}
+			if (pos.size() == 3)
+			{
+				STATS::STAT_SET_POS(hash, pos[0], pos[1], pos[2], true);
+			}
+			return;
+		}
+
 		default:
 			return; // data type not supported
 		}
@@ -258,7 +363,7 @@ namespace YimMenu::Submenus
 		case sStatData::Type::_BOOL:
 			return ImGui::Checkbox("Value", &value.m_AsBool);
 		case sStatData::Type::FLOAT:
-			return ImGui::InputFloat("Value", &value.m_AsFloat);
+			return ImGui::InputFloat("Value", &value.m_AsFloat[0]);
 		case sStatData::Type::INT:
 			return ImGui::InputInt("Value", &value.m_AsInt);
 		case sStatData::Type::UINT32:
@@ -270,11 +375,50 @@ namespace YimMenu::Submenus
 		case sStatData::Type::INT64:
 			return ImGui::InputScalar("Value", ImGuiDataType_S64, &value.m_AsU64);
 		case sStatData::Type::UINT64:
+		case sStatData::Type::USERID:
 			return ImGui::InputScalar("Value", ImGuiDataType_U64, &value.m_AsU64);
 		case sStatData::Type::STRING:
 			return ImGui::InputText("Value", value.m_AsString, sizeof(value.m_AsString));
 		case sStatData::Type::PACKED:
 			return ImGui::Bitfield("Value", &value.m_AsU64);
+		case sStatData::Type::POS:
+			ImGui::PushItemWidth(50.0f);
+			ImGui::InputFloat("X", &value.m_AsFloat[0]);
+			ImGui::SameLine();
+			ImGui::InputFloat("Y", &value.m_AsFloat[1]);
+			ImGui::SameLine();
+			ImGui::InputFloat("Z", &value.m_AsFloat[2]);
+			ImGui::PopItemWidth();
+			return true;
+		case sStatData::Type::DATE:
+		{
+			ImGui::PushItemWidth(60.0f);
+			ImGui::InputScalar("Year", ImGuiDataType_U32, &value.m_Date.Year);
+			ImGui::SameLine();
+			ImGui::PopItemWidth();
+			ImGui::PushItemWidth(50.0f);
+			ImGui::InputScalar("Month", ImGuiDataType_U32, &value.m_Date.Month);
+			ImGui::SameLine();
+			ImGui::InputScalar("Day", ImGuiDataType_U32, &value.m_Date.Day);
+			ImGui::SameLine();
+			ImGui::InputScalar("Hour", ImGuiDataType_U32, &value.m_Date.Hour);
+			ImGui::SameLine();
+			ImGui::InputScalar("Minute", ImGuiDataType_U32, &value.m_Date.Minute);
+			ImGui::SameLine();
+			ImGui::InputScalar("Second", ImGuiDataType_U32, &value.m_Date.Second);
+			ImGui::SameLine();
+			ImGui::InputScalar("Millisecond", ImGuiDataType_U32, &value.m_Date.Millisecond);
+			ImGui::PopItemWidth();
+			if (CheckDate(value.m_Date))
+				return true;
+			else
+			{
+				ImGui::TextColored(ImVec4(0.957f, 0.643f, 0.376f, 1.00f), "The entered date or time is invalid, please recheck the input data.");
+				return false;
+			}
+		}
+		case sStatData::Type::PROFILE_SETTING:
+		case sStatData::Type::TEXTLABEL:
 		default:
 			ImGui::BeginDisabled();
 			ImGui::Text("Data type not supported");
@@ -357,7 +501,7 @@ namespace YimMenu::Submenus
 			{
 				current_info = GetStatInfo(stat_buf);
 				if (current_info.IsValid())
-					ReadStat(value, current_info.m_Data);
+					ReadStat(current_info.m_NameHash,value, current_info.m_Data);
 			}
 
 			if (!current_info.IsValid())
@@ -367,12 +511,13 @@ namespace YimMenu::Submenus
 				ImGui::Text("Normalized name to: %s", current_info.m_Name.data());
 			}
 
-			bool can_edit = !current_info.m_Data->IsControlledByNetshop();
+			bool can_edit = RenderStatEditor(value, current_info.m_Data);
 
-			RenderStatEditor(value, current_info.m_Data);
+			if (can_edit)
+				can_edit = !current_info.m_Data->IsControlledByNetshop();			
 
 			if (ImGui::Button("Refresh"))
-				ReadStat(value, current_info.m_Data);
+				ReadStat(current_info.m_NameHash,value, current_info.m_Data);
 			ImGui::SameLine();
 			ImGui::BeginDisabled(!can_edit);
 			if (ImGui::Button("Write"))
