@@ -2,7 +2,7 @@ name: Nightly Build
 
 on:
   push:
-    branches: [mine]
+    branches: [enhanced]
   workflow_dispatch:
 
 permissions:
